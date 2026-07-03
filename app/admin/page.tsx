@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSiteData, slugify } from "@/lib/siteData";
 import type { SiteData, ExperienceItem, EventItem, ProjectDetail } from "@/lib/defaultData";
 
-const ADMIN_PASSWORD = "enis2025";
+const ADMIN_PASSWORD = "2941328294.Enis";
 
 export default function AdminPage() {
   const { data, updateData, resetData, exportData, loaded } = useSiteData();
@@ -334,9 +334,9 @@ function EventsEditor({ data, onSave }: { data: SiteData; onSave: (v: EventItem[
     setEvents(events.filter((_, i) => i !== index));
   };
 
-  const updateEvent = (index: number, key: keyof EventItem, value: string | string[]) => {
+  const updateEvent = (index: number, key: keyof EventItem, value: any) => {
     const newEvents = [...events];
-    newEvents[index] = { ...newEvents[index], [key]: value };
+    newEvents[index] = { ...newEvents[index], [key]: value } as any;
     setEvents(newEvents);
   };
 
@@ -376,6 +376,29 @@ function EventsEditor({ data, onSave }: { data: SiteData; onSave: (v: EventItem[
             <div className="mt-6">
               <ImageArrayField label="Etkinlik Galerisi" items={ev.gallery || []} onChange={(v) => updateEvent(i, "gallery", v)} />
             </div>
+
+            <div className="mt-6 border-t border-[#1E1E2A]/60 pt-4">
+              <h4 className="text-xs font-bold text-[#A78BFA] uppercase tracking-widest mb-3">Etkinlik Özel SEO Ayarları (Google Aramaları İçin)</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Field 
+                  label="Etkinlik SEO Başlığı (Title)" 
+                  value={ev.seo?.title || ""} 
+                  onChange={(v) => updateEvent(i, "seo", { ...ev.seo, title: v })} 
+                />
+                <Field 
+                  label="Etkinlik Anahtar Kelimeler (Keywords)" 
+                  value={ev.seo?.keywords || ""} 
+                  onChange={(v) => updateEvent(i, "seo", { ...ev.seo, keywords: v })} 
+                />
+                <div className="md:col-span-2">
+                  <TextArea 
+                    label="Etkinlik SEO Açıklaması (Description)" 
+                    value={ev.seo?.description || ""} 
+                    onChange={(v) => updateEvent(i, "seo", { ...ev.seo, description: v })} 
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         ))}
       </div>
@@ -413,9 +436,9 @@ function ProjectsEditor({ data, onSave }: { data: SiteData; onSave: (v: ProjectD
     setProjects(projects.filter((_, i) => i !== index));
   };
 
-  const updateProject = (index: number, key: keyof ProjectDetail, value: string | string[]) => {
+  const updateProject = (index: number, key: keyof ProjectDetail, value: any) => {
     const newProjects = [...projects];
-    newProjects[index] = { ...newProjects[index], [key]: value };
+    newProjects[index] = { ...newProjects[index], [key]: value } as any;
     setProjects(newProjects);
   };
 
@@ -460,6 +483,29 @@ function ProjectsEditor({ data, onSave }: { data: SiteData; onSave: (v: ProjectD
 
             <div className="mt-6">
               <ImageArrayField label="Proje Galerisi (Ekran Görüntüleri)" items={proj.gallery || []} onChange={(v) => updateProject(i, "gallery", v)} />
+            </div>
+
+            <div className="mt-6 border-t border-[#1E1E2A]/60 pt-4">
+              <h4 className="text-xs font-bold text-[#A78BFA] uppercase tracking-widest mb-3">Proje Özel SEO Ayarları (Google Aramaları İçin)</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Field 
+                  label="Proje SEO Başlığı (Title)" 
+                  value={proj.seo?.title || ""} 
+                  onChange={(v) => updateProject(i, "seo", { ...proj.seo, title: v })} 
+                />
+                <Field 
+                  label="Proje Anahtar Kelimeler (Keywords)" 
+                  value={proj.seo?.keywords || ""} 
+                  onChange={(v) => updateProject(i, "seo", { ...proj.seo, keywords: v })} 
+                />
+                <div className="md:col-span-2">
+                  <TextArea 
+                    label="Proje SEO Açıklaması (Description)" 
+                    value={proj.seo?.description || ""} 
+                    onChange={(v) => updateProject(i, "seo", { ...proj.seo, description: v })} 
+                  />
+                </div>
+              </div>
             </div>
           </div>
         ))}
@@ -559,15 +605,108 @@ function SkillsEditor({ data, onSave }: { data: SiteData; onSave: (v: SiteData["
 
 // ─── Contact Editor ───
 function ContactEditor({ data, onSave }: { data: SiteData; onSave: (v: SiteData["contact"]) => void }) {
-  const [contact, setContact] = useState(data.contact);
+  const [contact, setContact] = useState(data.contact || {
+    email: "", phone: "", linkedin: "", instagram: "", github: "", location: "", address: "",
+    showEmail: true, showPhone: true, showLinkedin: true, showInstagram: true, showGithub: true, showLocation: true, showAddress: true
+  });
   return (
-    <div className="space-y-5">
-      <h2 className="text-xl font-bold text-white mb-6">İletişim Bilgileri</h2>
-      <Field label="E-posta" value={contact.email} onChange={(v) => setContact({ ...contact, email: v })} />
-      <Field label="Telefon" value={contact.phone} onChange={(v) => setContact({ ...contact, phone: v })} />
-      <Field label="LinkedIn URL" value={contact.linkedin} onChange={(v) => setContact({ ...contact, linkedin: v })} />
-      <Field label="Instagram URL" value={contact.instagram} onChange={(v) => setContact({ ...contact, instagram: v })} />
-      <button onClick={() => onSave(contact)} className="px-6 py-2.5 rounded-xl bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-medium transition-colors">Değişiklikleri Kaydet</button>
+    <div className="space-y-6">
+      <h2 className="text-xl font-bold text-white mb-6">İletişim Bilgileri & Görünürlük Ayarları</h2>
+      
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+          <Field label="E-posta" value={contact.email} onChange={(v) => setContact({ ...contact, email: v })} />
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-black/20 border border-white/5 h-[46px]">
+            <input 
+              type="checkbox" 
+              checked={contact.showEmail !== false} 
+              onChange={(e) => setContact({ ...contact, showEmail: e.target.checked })}
+              className="w-5 h-5 rounded border-[#1E1E2A] text-[#7C3AED] focus:ring-[#7C3AED] cursor-pointer"
+            />
+            <label className="text-sm text-[#9090A8] font-medium cursor-pointer">E-posta Görünsün</label>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+          <Field label="Telefon" value={contact.phone} onChange={(v) => setContact({ ...contact, phone: v })} />
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-black/20 border border-white/5 h-[46px]">
+            <input 
+              type="checkbox" 
+              checked={contact.showPhone !== false} 
+              onChange={(e) => setContact({ ...contact, showPhone: e.target.checked })}
+              className="w-5 h-5 rounded border-[#1E1E2A] text-[#7C3AED] focus:ring-[#7C3AED] cursor-pointer"
+            />
+            <label className="text-sm text-[#9090A8] font-medium cursor-pointer">Telefon Görünsün</label>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+          <Field label="Konum" value={contact.location} onChange={(v) => setContact({ ...contact, location: v })} />
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-black/20 border border-white/5 h-[46px]">
+            <input 
+              type="checkbox" 
+              checked={contact.showLocation !== false} 
+              onChange={(e) => setContact({ ...contact, showLocation: e.target.checked })}
+              className="w-5 h-5 rounded border-[#1E1E2A] text-[#7C3AED] focus:ring-[#7C3AED] cursor-pointer"
+            />
+            <label className="text-sm text-[#9090A8] font-medium cursor-pointer">Konum Görünsün</label>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+          <Field label="Adres" value={contact.address} onChange={(v) => setContact({ ...contact, address: v })} />
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-black/20 border border-white/5 h-[46px]">
+            <input 
+              type="checkbox" 
+              checked={contact.showAddress !== false} 
+              onChange={(e) => setContact({ ...contact, showAddress: e.target.checked })}
+              className="w-5 h-5 rounded border-[#1E1E2A] text-[#7C3AED] focus:ring-[#7C3AED] cursor-pointer"
+            />
+            <label className="text-sm text-[#9090A8] font-medium cursor-pointer">Adres Görünsün</label>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+          <Field label="LinkedIn URL" value={contact.linkedin} onChange={(v) => setContact({ ...contact, linkedin: v })} />
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-black/20 border border-white/5 h-[46px]">
+            <input 
+              type="checkbox" 
+              checked={contact.showLinkedin !== false} 
+              onChange={(e) => setContact({ ...contact, showLinkedin: e.target.checked })}
+              className="w-5 h-5 rounded border-[#1E1E2A] text-[#7C3AED] focus:ring-[#7C3AED] cursor-pointer"
+            />
+            <label className="text-sm text-[#9090A8] font-medium cursor-pointer">LinkedIn Görünsün</label>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+          <Field label="Instagram URL" value={contact.instagram} onChange={(v) => setContact({ ...contact, instagram: v })} />
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-black/20 border border-white/5 h-[46px]">
+            <input 
+              type="checkbox" 
+              checked={contact.showInstagram !== false} 
+              onChange={(e) => setContact({ ...contact, showInstagram: e.target.checked })}
+              className="w-5 h-5 rounded border-[#1E1E2A] text-[#7C3AED] focus:ring-[#7C3AED] cursor-pointer"
+            />
+            <label className="text-sm text-[#9090A8] font-medium cursor-pointer">Instagram Görünsün</label>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+          <Field label="GitHub URL" value={contact.github || ""} onChange={(v) => setContact({ ...contact, github: v })} />
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-black/20 border border-white/5 h-[46px]">
+            <input 
+              type="checkbox" 
+              checked={contact.showGithub !== false} 
+              onChange={(e) => setContact({ ...contact, showGithub: e.target.checked })}
+              className="w-5 h-5 rounded border-[#1E1E2A] text-[#7C3AED] focus:ring-[#7C3AED] cursor-pointer"
+            />
+            <label className="text-sm text-[#9090A8] font-medium cursor-pointer">GitHub Görünsün</label>
+          </div>
+        </div>
+      </div>
+
+      <button onClick={() => onSave(contact)} className="px-6 py-2.5 rounded-xl bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-medium transition-colors w-full mt-4">Değişiklikleri Kaydet</button>
     </div>
   );
 }

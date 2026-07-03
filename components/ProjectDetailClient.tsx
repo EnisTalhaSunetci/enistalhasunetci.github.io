@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -25,6 +26,31 @@ export default function ProjectDetailClient({
   projectSlug: string;
 }) {
   const { data, loaded } = useSiteData();
+  const project = data?.projects?.find((p) => p.slug === projectSlug);
+
+  useEffect(() => {
+    if (project) {
+      document.title = project.seo?.title || `${project.title} / Portfolyo`;
+      
+      let descMeta = document.querySelector('meta[name="description"]');
+      const descVal = project.seo?.description || project.subtitle || (project.description && project.description[0]) || "";
+      if (!descMeta) {
+        descMeta = document.createElement('meta');
+        descMeta.setAttribute('name', 'description');
+        document.head.appendChild(descMeta);
+      }
+      descMeta.setAttribute('content', descVal);
+
+      let keywordsMeta = document.querySelector('meta[name="keywords"]');
+      const keywordsVal = project.seo?.keywords || project.technologies.join(', ') || "";
+      if (!keywordsMeta) {
+        keywordsMeta = document.createElement('meta');
+        keywordsMeta.setAttribute('name', 'keywords');
+        document.head.appendChild(keywordsMeta);
+      }
+      keywordsMeta.setAttribute('content', keywordsVal);
+    }
+  }, [project]);
 
   if (!loaded) return (
     <div className="min-h-screen bg-[#0A0A0F] flex items-center justify-center text-white">
@@ -32,7 +58,6 @@ export default function ProjectDetailClient({
     </div>
   );
 
-  const project = data.projects.find((p) => p.slug === projectSlug);
   if (!project) return notFound();
 
   const relatedSlugs = project.relatedSlugs || [];

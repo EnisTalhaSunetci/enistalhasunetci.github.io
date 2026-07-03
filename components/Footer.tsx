@@ -42,23 +42,34 @@ export default function Footer() {
           <div>
             <p className="text-xs font-semibold text-[#4A4A60] uppercase tracking-widest mb-4">Sosyal Medya</p>
             <div className="space-y-2">
-              <a href={d.contact.linkedin} target="_blank" rel="noopener noreferrer" className="block text-sm text-[#9090A8] hover:text-white transition-colors">
-                LinkedIn
-              </a>
-              <a href={d.contact.instagram} target="_blank" rel="noopener noreferrer" className="block text-sm text-[#9090A8] hover:text-white transition-colors">
-                Instagram
-              </a>
-              <a href={`mailto:${d.contact.email}`} className="block text-sm text-[#9090A8] hover:text-white transition-colors">
-                {d.contact.email}
-              </a>
+              {d.contact.showLinkedin !== false && d.contact.linkedin && (
+                <a href={d.contact.linkedin} target="_blank" rel="noopener noreferrer" className="block text-sm text-[#9090A8] hover:text-white transition-colors">
+                  LinkedIn
+                </a>
+              )}
+              {d.contact.showInstagram !== false && d.contact.instagram && (
+                <a href={d.contact.instagram} target="_blank" rel="noopener noreferrer" className="block text-sm text-[#9090A8] hover:text-white transition-colors">
+                  Instagram
+                </a>
+              )}
+              {d.contact.showGithub !== false && d.contact.github && (
+                <a href={d.contact.github} target="_blank" rel="noopener noreferrer" className="block text-sm text-[#9090A8] hover:text-white transition-colors">
+                  GitHub
+                </a>
+              )}
+              {d.contact.showEmail !== false && d.contact.email && (
+                <a href={`mailto:${d.contact.email}`} className="block text-sm text-[#9090A8] hover:text-white transition-colors">
+                  {d.contact.email}
+                </a>
+              )}
             </div>
           </div>
         </div>
-
+ 
         {/* Bottom */}
         <div className="mt-12 pt-8 border-t border-[#1E1E2A] flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="text-xs text-[#4A4A60]">
-            © {new Date().getFullYear()} Enis Talha Sünetci · {d.contact.location}
+            © {new Date().getFullYear()} Enis Talha Sünetci {d.contact.showLocation !== false && d.contact.location ? `· ${d.contact.location}` : ""}
           </div>
           <div className="text-xs text-[#4A4A60]">
             Made with 💜

@@ -5,6 +5,12 @@
 // To make changes permanent: edit this file → push to GitHub → redeploy.
 // ====================================================================
 
+export interface SEOConfig {
+  title?: string;
+  description?: string;
+  keywords?: string;
+}
+
 export interface SiteData {
   hero: {
     name: string;
@@ -40,6 +46,13 @@ export interface SiteData {
     github: string;
     location: string;
     address: string;
+    showEmail?: boolean;
+    showPhone?: boolean;
+    showLinkedin?: boolean;
+    showInstagram?: boolean;
+    showGithub?: boolean;
+    showLocation?: boolean;
+    showAddress?: boolean;
   };
   seo: {
     homepage: { title: string; description: string; keywords: string };
@@ -66,6 +79,7 @@ export interface ProjectDetail {
   technologies: string[];
   pdfUrl?: string; // Optional PDF link
   relatedSlugs?: string[];
+  seo?: SEOConfig;
 }
 
 export interface ExperienceItem {
@@ -89,6 +103,7 @@ export interface EventItem {
   details: string[];
   achievements: string[];
   gallery: string[];
+  seo?: SEOConfig;
 }
 
 export const DEFAULT_SITE_DATA: SiteData = {
@@ -430,7 +445,14 @@ export const DEFAULT_SITE_DATA: SiteData = {
     "instagram": "https://www.instagram.com/enis_talha/",
     "github": "",
     "location": "Kocaeli / İstanbul, Türkiye",
-    "address": "Altayeşme Mah. Birsen Sok. no:17/19 daire:12 Maltepe/İstanbul"
+    "address": "Altayeşme Mah. Birsen Sok. no:17/19 daire:12 Maltepe/İstanbul",
+    "showEmail": true,
+    "showPhone": true,
+    "showLinkedin": true,
+    "showInstagram": true,
+    "showGithub": true,
+    "showLocation": true,
+    "showAddress": true
   },
   "seo": {
     "homepage": {

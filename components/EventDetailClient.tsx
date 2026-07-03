@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useSiteData } from "@/lib/siteData";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -13,6 +14,31 @@ import ScrollReveal from "@/components/ScrollReveal";
 
 export default function EventDetailClient({ eventSlug }: { eventSlug: string }) {
   const { data, loaded } = useSiteData();
+  const event = data?.events?.find((e) => e.slug === eventSlug);
+
+  useEffect(() => {
+    if (event) {
+      document.title = event.seo?.title || `${event.title} / Portfolyo`;
+      
+      let descMeta = document.querySelector('meta[name="description"]');
+      const descVal = event.seo?.description || event.description || "";
+      if (!descMeta) {
+        descMeta = document.createElement('meta');
+        descMeta.setAttribute('name', 'description');
+        document.head.appendChild(descMeta);
+      }
+      descMeta.setAttribute('content', descVal);
+
+      let keywordsMeta = document.querySelector('meta[name="keywords"]');
+      const keywordsVal = event.seo?.keywords || `${event.category}, ${event.org}, Enis Talha Sünetci`;
+      if (!keywordsMeta) {
+        keywordsMeta = document.createElement('meta');
+        keywordsMeta.setAttribute('name', 'keywords');
+        document.head.appendChild(keywordsMeta);
+      }
+      keywordsMeta.setAttribute('content', keywordsVal);
+    }
+  }, [event]);
 
   if (!loaded) {
     return (
@@ -21,8 +47,6 @@ export default function EventDetailClient({ eventSlug }: { eventSlug: string }) 
       </div>
     );
   }
-
-  const event = data.events.find((e) => e.slug === eventSlug);
 
   if (!event) {
     return notFound();

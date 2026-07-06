@@ -447,12 +447,12 @@ export const DEFAULT_SITE_DATA: SiteData = {
     "location": "Kocaeli / İstanbul, Türkiye",
     "address": "Altayeşme Mah. Birsen Sok. no:17/19 daire:12 Maltepe/İstanbul",
     "showEmail": true,
-    "showPhone": true,
+    "showPhone": false,
     "showLinkedin": true,
     "showInstagram": true,
     "showGithub": true,
     "showLocation": true,
-    "showAddress": true
+    "showAddress": false
   },
   "seo": {
     "homepage": {

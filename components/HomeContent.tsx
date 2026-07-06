@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
@@ -18,6 +19,17 @@ const ModernBackground = dynamic(() => import("@/components/ModernDynamicBackgro
 });
 
 export default function HomeContent() {
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hostname !== "localhost") {
+      const hasVisited = sessionStorage.getItem("portfolio_visited");
+      if (!hasVisited) {
+        fetch("https://api.counterapi.dev/v1/enistalha-portfolio/visitors/up")
+          .then(() => sessionStorage.setItem("portfolio_visited", "true"))
+          .catch(() => {});
+      }
+    }
+  }, []);
+
   return (
     <main className="relative min-h-screen">
       {/* Mouse follower */}

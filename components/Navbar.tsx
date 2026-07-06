@@ -19,6 +19,42 @@ export default function Navbar() {
   const pathname = usePathname();
 
   useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hostname !== "localhost") {
+      const hasVisited = sessionStorage.getItem("visited_session");
+      const date = new Date();
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+
+      if (!hasVisited) {
+        // Increment visitor stats (Total, Yearly, Monthly, Daily)
+        Promise.all([
+          fetch("https://api.counterapi.dev/v1/enistalha-portfolio/visitors/up"),
+          fetch(`https://api.counterapi.dev/v1/enistalha-portfolio/visitors_${year}/up`),
+          fetch(`https://api.counterapi.dev/v1/enistalha-portfolio/visitors_${year}_${month}/up`),
+          fetch(`https://api.counterapi.dev/v1/enistalha-portfolio/visitors_${year}_${month}_${day}/up`)
+        ])
+        .then(() => sessionStorage.setItem("visited_session", "true"))
+        .catch(() => {});
+      }
+
+      // Track online presence (Increment active count)
+      fetch("https://api.counterapi.dev/v1/enistalha-portfolio/active/up").catch(() => {});
+
+      // Decrement active count on unload
+      const handleUnload = () => {
+        navigator.sendBeacon("https://api.counterapi.dev/v1/enistalha-portfolio/active/down");
+      };
+      window.addEventListener("beforeunload", handleUnload);
+
+      return () => {
+        window.removeEventListener("beforeunload", handleUnload);
+        fetch("https://api.counterapi.dev/v1/enistalha-portfolio/active/down").catch(() => {});
+      };
+    }
+  }, []);
+
+  useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);

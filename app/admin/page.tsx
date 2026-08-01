@@ -831,49 +831,21 @@ function TextArea({ label, value, onChange }: { label: string; value: string; on
 export function ImageUploadField({ label, value, onChange, isPdf }: { label: string; value: string; onChange: (v: string) => void; isPdf?: boolean }) {
   const [uploading, setUploading] = useState(false);
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setUploading(true);
-
-    // Check if ImgBB API key is available (client-side upload)
-    const imgbbKey = typeof window !== "undefined" ? localStorage.getItem("imgbb_api_key") : null;
-    if (imgbbKey && !isPdf) {
-      const formData = new FormData();
-      formData.append("image", file);
-      try {
-        const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
-          method: "POST",
-          body: formData,
-        });
-        const json = await res.json();
-        if (json.success && json.data?.url) {
-          onChange(json.data.url);
-        } else {
-          alert(json.error?.message || "ImgBB yükleme hatası");
-        }
-      } catch {
-        alert("ImgBB yükleme sunucusuna bağlanılamadı.");
-      } finally {
-        setUploading(false);
-      }
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const res = await fetch("/api/upload", { method: "POST", body: formData });
-      const json = await res.json();
-      if (json.success) onChange(json.url);
-      else alert(json.error || "Yükleme hatası");
-    } catch {
-      alert("Sunucuya bağlanılamadı. Fotoğraf yüklemek için lütfen GitHub Senkronizasyonu sekmesinden ImgBB API anahtarı ekleyin.");
-    } finally {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      onChange(reader.result as string);
       setUploading(false);
-    }
+    };
+    reader.onerror = () => {
+      alert("Dosya okunurken bir hata oluştu.");
+      setUploading(false);
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -917,47 +889,21 @@ function ArrayField({ label, items, onChange, placeholder = "Yeni ekle..." }: { 
 function ImageArrayField({ label, items, onChange }: { label: string; items: string[]; onChange: (v: string[]) => void }) {
   const [uploading, setUploading] = useState(false);
 
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
 
-    // Check if ImgBB API key is available (client-side upload)
-    const imgbbKey = typeof window !== "undefined" ? localStorage.getItem("imgbb_api_key") : null;
-    if (imgbbKey) {
-      const formData = new FormData();
-      formData.append("image", file);
-      try {
-        const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
-          method: "POST",
-          body: formData,
-        });
-        const json = await res.json();
-        if (json.success && json.data?.url) {
-          onChange([...items, json.data.url]);
-        } else {
-          alert(json.error?.message || "ImgBB yükleme hatası");
-        }
-      } catch {
-        alert("ImgBB yükleme sunucusuna bağlanılamadı.");
-      } finally {
-        setUploading(false);
-      }
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", file);
-    try {
-      const res = await fetch("/api/upload", { method: "POST", body: formData });
-      const json = await res.json();
-      if (json.success) onChange([...items, json.url]);
-      else alert(json.error);
-    } catch {
-      alert("Hata. Fotoğraf yüklemek için lütfen GitHub Senkronizasyonu sekmesinden ImgBB API anahtarı ekleyin.");
-    } finally {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      onChange([...items, reader.result as string]);
       setUploading(false);
-    }
+    };
+    reader.onerror = () => {
+      alert("Görsel okunurken bir hata oluştu.");
+      setUploading(false);
+    };
+    reader.readAsDataURL(file);
   };
 
   const removeItem = (idx: number) => { onChange(items.filter((_, i) => i !== idx)); };
@@ -985,14 +931,12 @@ function ImageArrayField({ label, items, onChange }: { label: string; items: str
 // ─── GitHub Sync Panel ───
 function GithubSyncPanel({ data }: { data: SiteData }) {
   const [token, setToken] = useState("");
-  const [imgbbKey, setImgbbKey] = useState("");
   const [status, setStatus] = useState("");
   const [isSyncing, setIsSyncing] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       setToken(localStorage.getItem("github_sync_token") || "");
-      setImgbbKey(localStorage.getItem("imgbb_api_key") || "");
     }
   }, []);
 
@@ -1198,21 +1142,6 @@ export const DEFAULT_SITE_DATA: SiteData = ${JSON.stringify(data, null, 2)};
             placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxx" 
             className="w-full px-4 py-3 rounded-xl bg-black/40 border border-[#1E1E2A] text-white text-sm focus:border-[#7C3AED]" 
           />
-        </div>
-
-        <div>
-          <label className="block text-xs text-[#4A4A60] font-semibold uppercase tracking-wider mb-2">ImgBB API Anahtarı (Görsel Yüklemek İçin)</label>
-          <input 
-            type="password" 
-            value={imgbbKey} 
-            onChange={(e) => {
-              setImgbbKey(e.target.value);
-              localStorage.setItem("imgbb_api_key", e.target.value);
-            }} 
-            placeholder="Örn: 9a78xxxxxxxxxxxxxxxxxxxxxx" 
-            className="w-full px-4 py-3 rounded-xl bg-black/40 border border-[#1E1E2A] text-white text-sm focus:border-[#7C3AED]" 
-          />
-          <p className="text-[10px] text-[#9090A8] mt-1">Sitenize admin panelinden fotoğraf yükleyebilmek için ücretsiz bir ImgBB API anahtarı girin (<a href="https://api.imgbb.com/" target="_blank" rel="noopener noreferrer" className="text-[#A78BFA] underline">buradan alın</a>).</p>
         </div>
 
         <button 

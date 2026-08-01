@@ -11,7 +11,7 @@ export default function AdminPage() {
   const { data, updateData, resetData, exportData, loaded } = useSiteData();
   const [authenticated, setAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
-  const [activeTab, setActiveTab] = useState("analytics");
+  const [activeTab, setActiveTab] = useState("hero");
   const [saveMsg, setSaveMsg] = useState("");
 
   useEffect(() => {
@@ -67,7 +67,6 @@ export default function AdminPage() {
   }
 
   const TABS = [
-    { key: "analytics", label: "📊 Canlı İstatistikler" },
     { key: "hero", label: "Hero (Ana Sayfa)" },
     { key: "about", label: "Hakkımda & Eğitim" },
     { key: "experiences", label: "Deneyimler" },
@@ -115,7 +114,6 @@ export default function AdminPage() {
           </div>
 
           <div className="card p-6 md:p-8">
-            {activeTab === "analytics" && <AnalyticsPanel />}
             {activeTab === "hero" && <HeroEditor data={data} onSave={(v) => handleSave("Hero", { hero: v })} />}
             {activeTab === "about" && <AboutEditor data={data} onSave={(v) => handleSave("Hakkımda", { about: v })} />}
             {activeTab === "experiences" && <ExperiencesEditor data={data} onSave={(v) => handleSave("Deneyimler", { experiences: v })} />}
@@ -733,28 +731,40 @@ function SEOEditor({ data, onSave }: { data: SiteData; onSave: (v: SiteData["seo
   const [seo, setSeo] = useState(data.seo || {
     homepage: { title: "", description: "", keywords: "" },
     projects: { title: "", description: "", keywords: "" },
-    events: { title: "", description: "", keywords: "" }
+    events: { title: "", description: "", keywords: "" },
+    googleAnalyticsId: ""
   });
 
   const updateSEO = (page: keyof SiteData["seo"], key: string, val: string) => {
-    setSeo({ ...seo, [page]: { ...seo[page], [key]: val } });
+    setSeo({ ...seo, [page]: { ...(seo[page] as any), [key]: val } } as any);
   };
 
   return (
     <div className="space-y-8">
-      <h2 className="text-xl font-bold text-white mb-2">Profesyonel SEO Ayarları</h2>
-      <p className="text-sm text-[#9090A8] mb-6">Google aramalarında (Örn: &quot;Enis Talha Sünetci&quot;) sitenizin nasıl görüneceğini buradan ayarlayın.</p>
+      <h2 className="text-xl font-bold text-white mb-2">Profesyonel SEO & Analytics Ayarları</h2>
+      <p className="text-sm text-[#9090A8] mb-6">Google aramalarında sitenizin nasıl görüneceğini ve Google Analytics entegrasyonunu buradan ayarlayın.</p>
 
-      {Object.entries(seo).map(([page, config]) => (
+      {/* Google Analytics ID */}
+      <div className="p-6 rounded-2xl bg-[#111118] border border-[#1E1E2A] space-y-4">
+        <h3 className="text-sm font-bold text-[#A78BFA] uppercase tracking-widest">Google Analytics (GA4) Entegrasyonu</h3>
+        <p className="text-xs text-[#9090A8]">Ziyaretçi istatistiklerini izlemek için Google Analytics Ölçüm Kimliğinizi (G-XXXXXXXXXX) buraya ekleyin.</p>
+        <Field 
+          label="Google Analytics Ölçüm Kimliği (Measurement ID)" 
+          value={seo.googleAnalyticsId || ""} 
+          onChange={(v) => setSeo({ ...seo, googleAnalyticsId: v })} 
+        />
+      </div>
+
+      {Object.entries(seo).filter(([key]) => key !== "googleAnalyticsId").map(([page, config]) => (
         <div key={page} className="p-6 rounded-2xl bg-[#111118] border border-[#1E1E2A] space-y-4">
           <h3 className="text-sm font-bold text-[#A78BFA] uppercase tracking-widest">{page === "homepage" ? "Ana Sayfa" : page === "projects" ? "Projeler Sayfası" : "Etkinlikler Sayfası"}</h3>
-          <Field label="Sayfa Başlığı (Title)" value={config.title} onChange={(v) => updateSEO(page as any, "title", v)} />
-          <TextArea label="Meta Açıklaması (Description)" value={config.description} onChange={(v) => updateSEO(page as any, "description", v)} />
-          <Field label="Anahtar Kelimeler (Keywords)" value={config.keywords} onChange={(v) => updateSEO(page as any, "keywords", v)} />
+          <Field label="Sayfa Başlığı (Title)" value={(config as any).title} onChange={(v) => updateSEO(page as any, "title", v)} />
+          <TextArea label="Meta Açıklaması (Description)" value={(config as any).description} onChange={(v) => updateSEO(page as any, "description", v)} />
+          <Field label="Anahtar Kelimeler (Keywords)" value={(config as any).keywords} onChange={(v) => updateSEO(page as any, "keywords", v)} />
         </div>
       ))}
 
-      <button onClick={() => onSave(seo)} className="px-6 py-2.5 rounded-xl bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-medium transition-colors w-full">SEO Ayarlarını Kaydet</button>
+      <button onClick={() => onSave(seo)} className="px-6 py-2.5 rounded-xl bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-medium transition-colors w-full">SEO & Analytics Ayarlarını Kaydet</button>
     </div>
   );
 }
@@ -826,6 +836,31 @@ export function ImageUploadField({ label, value, onChange, isPdf }: { label: str
     if (!file) return;
 
     setUploading(true);
+
+    // Check if ImgBB API key is available (client-side upload)
+    const imgbbKey = typeof window !== "undefined" ? localStorage.getItem("imgbb_api_key") : null;
+    if (imgbbKey && !isPdf) {
+      const formData = new FormData();
+      formData.append("image", file);
+      try {
+        const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
+          method: "POST",
+          body: formData,
+        });
+        const json = await res.json();
+        if (json.success && json.data?.url) {
+          onChange(json.data.url);
+        } else {
+          alert(json.error?.message || "ImgBB yükleme hatası");
+        }
+      } catch {
+        alert("ImgBB yükleme sunucusuna bağlanılamadı.");
+      } finally {
+        setUploading(false);
+      }
+      return;
+    }
+
     const formData = new FormData();
     formData.append("file", file);
 
@@ -835,7 +870,7 @@ export function ImageUploadField({ label, value, onChange, isPdf }: { label: str
       if (json.success) onChange(json.url);
       else alert(json.error || "Yükleme hatası");
     } catch {
-      alert("Sunucuya bağlanılamadı.");
+      alert("Sunucuya bağlanılamadı. Fotoğraf yüklemek için lütfen GitHub Senkronizasyonu sekmesinden ImgBB API anahtarı ekleyin.");
     } finally {
       setUploading(false);
     }
@@ -886,6 +921,31 @@ function ImageArrayField({ label, items, onChange }: { label: string; items: str
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
+
+    // Check if ImgBB API key is available (client-side upload)
+    const imgbbKey = typeof window !== "undefined" ? localStorage.getItem("imgbb_api_key") : null;
+    if (imgbbKey) {
+      const formData = new FormData();
+      formData.append("image", file);
+      try {
+        const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
+          method: "POST",
+          body: formData,
+        });
+        const json = await res.json();
+        if (json.success && json.data?.url) {
+          onChange([...items, json.data.url]);
+        } else {
+          alert(json.error?.message || "ImgBB yükleme hatası");
+        }
+      } catch {
+        alert("ImgBB yükleme sunucusuna bağlanılamadı.");
+      } finally {
+        setUploading(false);
+      }
+      return;
+    }
+
     const formData = new FormData();
     formData.append("file", file);
     try {
@@ -894,7 +954,7 @@ function ImageArrayField({ label, items, onChange }: { label: string; items: str
       if (json.success) onChange([...items, json.url]);
       else alert(json.error);
     } catch {
-      alert("Hata");
+      alert("Hata. Fotoğraf yüklemek için lütfen GitHub Senkronizasyonu sekmesinden ImgBB API anahtarı ekleyin.");
     } finally {
       setUploading(false);
     }
@@ -925,12 +985,14 @@ function ImageArrayField({ label, items, onChange }: { label: string; items: str
 // ─── GitHub Sync Panel ───
 function GithubSyncPanel({ data }: { data: SiteData }) {
   const [token, setToken] = useState("");
+  const [imgbbKey, setImgbbKey] = useState("");
   const [status, setStatus] = useState("");
   const [isSyncing, setIsSyncing] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       setToken(localStorage.getItem("github_sync_token") || "");
+      setImgbbKey(localStorage.getItem("imgbb_api_key") || "");
     }
   }, []);
 
@@ -1129,10 +1191,28 @@ export const DEFAULT_SITE_DATA: SiteData = ${JSON.stringify(data, null, 2)};
           <input 
             type="password" 
             value={token} 
-            onChange={(e) => setToken(e.target.value)} 
+            onChange={(e) => {
+              setToken(e.target.value);
+              localStorage.setItem("github_sync_token", e.target.value);
+            }} 
             placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxx" 
             className="w-full px-4 py-3 rounded-xl bg-black/40 border border-[#1E1E2A] text-white text-sm focus:border-[#7C3AED]" 
           />
+        </div>
+
+        <div>
+          <label className="block text-xs text-[#4A4A60] font-semibold uppercase tracking-wider mb-2">ImgBB API Anahtarı (Görsel Yüklemek İçin)</label>
+          <input 
+            type="password" 
+            value={imgbbKey} 
+            onChange={(e) => {
+              setImgbbKey(e.target.value);
+              localStorage.setItem("imgbb_api_key", e.target.value);
+            }} 
+            placeholder="Örn: 9a78xxxxxxxxxxxxxxxxxxxxxx" 
+            className="w-full px-4 py-3 rounded-xl bg-black/40 border border-[#1E1E2A] text-white text-sm focus:border-[#7C3AED]" 
+          />
+          <p className="text-[10px] text-[#9090A8] mt-1">Sitenize admin panelinden fotoğraf yükleyebilmek için ücretsiz bir ImgBB API anahtarı girin (<a href="https://api.imgbb.com/" target="_blank" rel="noopener noreferrer" className="text-[#A78BFA] underline">buradan alın</a>).</p>
         </div>
 
         <button 
@@ -1147,175 +1227,6 @@ export const DEFAULT_SITE_DATA: SiteData = ${JSON.stringify(data, null, 2)};
             {status}
           </div>
         )}
-      </div>
-    </div>
-  );
-}
-
-// ─── Analytics Panel ───
-function AnalyticsPanel() {
-  const [stats, setStats] = useState<{
-    total: number;
-    yearly: number;
-    monthly: number;
-    daily: number;
-    active: number;
-  }>({ total: 0, yearly: 0, monthly: 0, daily: 0, active: 1 });
-
-  const [loading, setLoading] = useState(true);
-  const [syncMsg, setSyncMsg] = useState("");
-
-  const safeFetch = async (url: string) => {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) return { count: 0 };
-      return await res.json();
-    } catch {
-      return { count: 0 };
-    }
-  };
-
-  const fetchStats = async () => {
-    try {
-      const date = new Date();
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-
-      const [totalData, yearlyData, monthlyData, dailyData, activeData] = await Promise.all([
-        safeFetch("https://api.counterapi.dev/v1/enistalha-portfolio/visitors"),
-        safeFetch(`https://api.counterapi.dev/v1/enistalha-portfolio/visitors_${year}`),
-        safeFetch(`https://api.counterapi.dev/v1/enistalha-portfolio/visitors_${year}_${month}`),
-        safeFetch(`https://api.counterapi.dev/v1/enistalha-portfolio/visitors_${year}_${month}_${day}`),
-        safeFetch("https://api.counterapi.dev/v1/enistalha-portfolio/active")
-      ]);
-
-      setStats({
-        total: totalData.count || 0,
-        yearly: yearlyData.count || 0,
-        monthly: monthlyData.count || 0,
-        daily: dailyData.count || 0,
-        active: Math.max(1, activeData.count || 1) // Always at least 1 (the admin viewing)
-      });
-    } catch {
-      // fallback
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchStats();
-    // Poll views every 15 seconds
-    const interval = setInterval(fetchStats, 15000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleResetActive = async () => {
-    setSyncMsg("Sıfırlanıyor...");
-    try {
-      // Reset active count back to 1
-      await safeFetch("https://api.counterapi.dev/v1/enistalha-portfolio/active/set?count=1");
-      await safeFetch("https://api.counterapi.dev/v2/enistalha-portfolio/active/reset?value=1");
-      
-      setSyncMsg("Çevrimiçi sayacı başarıyla sıfırlandı.");
-      setTimeout(() => setSyncMsg(""), 3000);
-      fetchStats();
-    } catch {
-      setSyncMsg("Sıfırlama hatası.");
-      setTimeout(() => setSyncMsg(""), 3000);
-    }
-  };
-
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between mb-2">
-        <div>
-          <h2 className="text-xl font-bold text-white">Ziyaretçi Analitiği (Gerçek Zamanlı)</h2>
-          <p className="text-sm text-[#9090A8] mt-1">Sitenizin gerçek veritabanı sayaçlarından alınan izlenme bilgileri.</p>
-        </div>
-        <div className="flex items-center gap-2">
-          {syncMsg && <span className="text-xs text-[#A78BFA] bg-[#7C3AED]/10 border border-[#7C3AED]/20 px-3 py-1.5 rounded-xl">{syncMsg}</span>}
-          <button 
-            onClick={() => { setLoading(true); fetchStats(); }} 
-            className="px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/5 text-xs text-[#9090A8] hover:text-white transition-colors"
-          >
-            Yenile ↻
-          </button>
-        </div>
-      </div>
-
-      {/* Main Grid: 2 Columns */}
-      <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
-        {/* Left Side: General Counters */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Today's Views */}
-          <div className="p-6 rounded-2xl bg-white/5 border border-white/10 relative overflow-hidden">
-            <div className="text-xs text-[#4A4A60] uppercase tracking-widest font-bold mb-2">Bugünkü Ziyaret (Günlük)</div>
-            <div className="text-3xl font-black text-[#A78BFA] tracking-tight">
-              {loading ? "..." : stats.daily}
-            </div>
-            <div className="text-[10px] text-[#9090A8] mt-2 font-medium">Bugün yapılan tekil oturum gösterimleri.</div>
-          </div>
-
-          {/* Monthly Views */}
-          <div className="p-6 rounded-2xl bg-white/5 border border-white/10 relative overflow-hidden">
-            <div className="text-xs text-[#4A4A60] uppercase tracking-widest font-bold mb-2">Bu Ayki Ziyaret (Aylık)</div>
-            <div className="text-3xl font-black text-white tracking-tight">
-              {loading ? "..." : stats.monthly}
-            </div>
-            <div className="text-[10px] text-[#9090A8] mt-2 font-medium">Mevcut ay içindeki toplam trafik.</div>
-          </div>
-
-          {/* Yearly Views */}
-          <div className="p-6 rounded-2xl bg-white/5 border border-white/10 relative overflow-hidden">
-            <div className="text-xs text-[#4A4A60] uppercase tracking-widest font-bold mb-2">Bu Yılki Ziyaret (Yıllık)</div>
-            <div className="text-3xl font-black text-white tracking-tight">
-              {loading ? "..." : stats.yearly}
-            </div>
-            <div className="text-[10px] text-[#9090A8] mt-2 font-medium">Bu yıl içerisinde yapılan tüm ziyaretler.</div>
-          </div>
-
-          {/* Total Views */}
-          <div className="p-6 rounded-2xl bg-white/5 border border-white/10 relative overflow-hidden">
-            <div className="text-xs text-[#4A4A60] uppercase tracking-widest font-bold mb-2">Toplam Ziyaret (Genel)</div>
-            <div className="text-3xl font-black text-green-400 tracking-tight">
-              {loading ? "..." : stats.total}
-            </div>
-            <div className="text-[10px] text-[#9090A8] mt-2 font-medium">Sitenin kurulduğu günden beri toplam trafik.</div>
-          </div>
-        </div>
-
-        {/* Right Side: Live/Active Users */}
-        <div className="p-6 rounded-2xl bg-gradient-to-br from-[#7C3AED]/10 to-[#EC4899]/10 border border-[#7C3AED]/20 flex flex-col justify-between h-full relative overflow-hidden">
-          <div>
-            <div className="text-xs text-[#4A4A60] uppercase tracking-widest font-bold mb-2">Şu An Çevrimiçi (Aktif)</div>
-            <div className="flex items-baseline gap-2">
-              <span className="text-5xl font-black text-white tracking-tight">{stats.active}</span>
-              <span className="text-xs font-semibold text-green-400">Aktif Kişi</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-[10px] text-green-400 mt-3 font-bold uppercase tracking-wider">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-              </span>
-              GERÇEK ZAMANLI TRAFİK
-            </div>
-            <p className="text-xs text-[#9090A8] mt-4 leading-relaxed">
-              Kullanıcıların siteyi açma ve kapama durumlarına göre anlık olarak hesaplanır.
-            </p>
-          </div>
-
-          <div className="mt-6 pt-4 border-t border-white/10 flex flex-col gap-2">
-            <button 
-              onClick={handleResetActive}
-              className="w-full py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-semibold transition-colors"
-            >
-              Çevrimiçi Sayacını Sıfırla
-            </button>
-            <span className="text-[9px] text-[#4A4A60] text-center">Sekmesini kapatmayanlar veya kopan bağlantılar sayacı şişirirse sıfırlayabilirsiniz.</span>
-          </div>
-        </div>
       </div>
     </div>
   );

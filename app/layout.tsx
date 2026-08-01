@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { DEFAULT_SITE_DATA } from "@/lib/defaultData";
 
 export const metadata: Metadata = {
   verification: {
@@ -35,7 +37,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <meta name="google-site-verification" content="google89e93659cfa9dec3" />
       </head>
-      <body className="bg-[#0A0A0F]">{children}</body>
+      <body className="bg-[#0A0A0F]">
+        {children}
+        {DEFAULT_SITE_DATA.seo.googleAnalyticsId && (
+          <GoogleAnalytics gaId={DEFAULT_SITE_DATA.seo.googleAnalyticsId} />
+        )}
+      </body>
     </html>
   );
 }

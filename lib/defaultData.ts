@@ -58,6 +58,7 @@ export interface SiteData {
     homepage: { title: string; description: string; keywords: string };
     projects: { title: string; description: string; keywords: string };
     events: { title: string; description: string; keywords: string };
+    googleAnalyticsId?: string;
   };
   categoryColors: { [key: string]: string };
   events: EventItem[];
@@ -469,7 +470,8 @@ export const DEFAULT_SITE_DATA: SiteData = {
       "title": "Etkinlikler & Paylaşımlar | Enis Talha Sünetci",
       "description": "Katıldığımız zirveler, fuarlar ve sektörel etkileşimler.",
       "keywords": "Etkinlikler, Fuar, Zirve, Diplomasi"
-    }
+    },
+    "googleAnalyticsId": ""
   },
   "categoryColors": {
     "Diplomasi": "#3b82f6",

@@ -225,8 +225,74 @@ function AboutEditor({ data, onSave }: { data: SiteData; onSave: (v: SiteData["a
         </div>
       </div>
 
-      <div className="p-4 bg-[#111118] border border-[#1E1E2A] rounded-xl text-xs text-[#9090A8]">Eğitim ve Sertifikalar şu an sadece JSON dosyasından düzenlenmektedir.</div>
-      <button onClick={() => onSave(about)} className="px-6 py-2.5 rounded-xl bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-medium transition-colors w-full">Değişiklikleri Kaydet</button>
+      {/* Eğitim Bilgileri */}
+      <div className="pt-6 border-t border-[#1E1E2A]">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-bold text-[#A78BFA] uppercase tracking-widest text-[10px]">Eğitim Bilgileri</h3>
+          <button 
+            type="button"
+            onClick={() => setAbout({ ...about, education: [...(about.education || []), { school: "Yeni Okul", department: "Yeni Bölüm", period: "2020-2024", gpa: "", note: "" }] })} 
+            className="px-2.5 py-1.5 text-[10px] bg-[#7C3AED] hover:bg-[#6D28D9] text-white rounded-lg transition-colors font-medium"
+          >
+            + Eğitim Ekle
+          </button>
+        </div>
+        <div className="space-y-4">
+          {about.education?.map((edu, idx) => (
+            <div key={idx} className="p-4 rounded-xl bg-[#111118] border border-[#1E1E2A] space-y-3 relative">
+              <button 
+                type="button"
+                onClick={() => setAbout({ ...about, education: about.education.filter((_, i) => i !== idx) })} 
+                className="absolute top-2 right-2 text-red-500 hover:text-red-400 text-[10px] font-semibold px-2 py-1"
+              >
+                Sil
+              </button>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <Field label="Okul Adı" value={edu.school} onChange={(v) => {
+                  const newEdu = [...about.education];
+                  newEdu[idx] = { ...newEdu[idx], school: v };
+                  setAbout({ ...about, education: newEdu });
+                }} />
+                <Field label="Bölüm" value={edu.department} onChange={(v) => {
+                  const newEdu = [...about.education];
+                  newEdu[idx] = { ...newEdu[idx], department: v };
+                  setAbout({ ...about, education: newEdu });
+                }} />
+                <Field label="Dönem (Örn: 2020-2024)" value={edu.period} onChange={(v) => {
+                  const newEdu = [...about.education];
+                  newEdu[idx] = { ...newEdu[idx], period: v };
+                  setAbout({ ...about, education: newEdu });
+                }} />
+                <Field label="GPA / Not Ortalaması (İsteğe Bağlı)" value={edu.gpa || ""} onChange={(v) => {
+                  const newEdu = [...about.education];
+                  newEdu[idx] = { ...newEdu[idx], gpa: v };
+                  setAbout({ ...about, education: newEdu });
+                }} />
+              </div>
+              <Field label="Ek Not / Detay (İsteğe Bağlı)" value={edu.note || ""} onChange={(v) => {
+                const newEdu = [...about.education];
+                newEdu[idx] = { ...newEdu[idx], note: v };
+                setAbout({ ...about, education: newEdu });
+              }} />
+            </div>
+          ))}
+          {(!about.education || about.education.length === 0) && (
+            <div className="text-center py-4 text-xs text-[#4A4A60]">Kayıtlı eğitim bilgisi yok.</div>
+          )}
+        </div>
+      </div>
+
+      {/* Sertifikalar */}
+      <div className="pt-6 border-t border-[#1E1E2A]">
+        <ArrayField 
+          label="Sertifikalar & Başarılar" 
+          items={about.certificates || []} 
+          onChange={(v) => setAbout({ ...about, certificates: v })} 
+          placeholder="Yeni sertifika veya başarı adı yazıp Ekle'ye basın..." 
+        />
+      </div>
+
+      <button onClick={() => onSave(about)} className="px-6 py-2.5 rounded-xl bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-medium transition-colors w-full mt-4">Değişiklikleri Kaydet</button>
     </div>
   );
 }

@@ -134,6 +134,10 @@ export default function AdminPage() {
 function HeroEditor({ data, onSave }: { data: SiteData; onSave: (v: SiteData["hero"]) => void }) {
   const [hero, setHero] = useState(data.hero);
 
+  useEffect(() => {
+    setHero(data.hero);
+  }, [data.hero]);
+
   const updateSlider = (index: number, key: string, value: string) => {
     const newSlider = [...hero.slider];
     newSlider[index] = { ...newSlider[index], [key]: value };
@@ -185,6 +189,10 @@ function HeroEditor({ data, onSave }: { data: SiteData; onSave: (v: SiteData["he
 // ─── About Editor ───
 function AboutEditor({ data, onSave }: { data: SiteData; onSave: (v: SiteData["about"]) => void }) {
   const [about, setAbout] = useState(data.about);
+
+  useEffect(() => {
+    setAbout(data.about);
+  }, [data.about]);
   
   const addHighlight = () => {
     setAbout({ ...about, highlights: [...about.highlights, { value: "0", label: "Yeni Bilgi" }] });

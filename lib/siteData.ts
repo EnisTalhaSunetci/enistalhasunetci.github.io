@@ -48,7 +48,16 @@ export function useSiteData() {
           });
         }
         
-        setData(deepMerge(DEFAULT_SITE_DATA as unknown as Record<string, unknown>, parsed) as unknown as SiteData);
+        const merged = deepMerge(DEFAULT_SITE_DATA as unknown as Record<string, unknown>, parsed) as unknown as SiteData;
+        if (!merged.about) merged.about = { ...DEFAULT_SITE_DATA.about };
+        if (!merged.about.responsibilities || merged.about.responsibilities.length === 0) {
+          merged.about.responsibilities = DEFAULT_SITE_DATA.about.responsibilities;
+        }
+        if (!merged.hero) merged.hero = { ...DEFAULT_SITE_DATA.hero };
+        if (!merged.hero.cvUrl) {
+          merged.hero.cvUrl = DEFAULT_SITE_DATA.hero.cvUrl;
+        }
+        setData(merged);
       }
     } catch {
       // fallback to defaults

@@ -150,6 +150,12 @@ function HeroEditor({ data, onSave }: { data: SiteData; onSave: (v: SiteData["he
       <Field label="Tagline" value={hero.tagline} onChange={(v) => setHero({ ...hero, tagline: v })} />
       <TextArea label="Açıklama" value={hero.description} onChange={(v) => setHero({ ...hero, description: v })} />
       <Field label="Konum" value={hero.location} onChange={(v) => setHero({ ...hero, location: v })} />
+
+      <div className="p-4 rounded-xl bg-[#111118] border border-[#7C3AED]/30 space-y-3">
+        <h3 className="text-sm font-bold text-[#A78BFA]">CV Dosyası Yükleme / Değiştirme</h3>
+        <p className="text-xs text-[#9090A8]">Site üzerindeki &quot;CV İndir&quot; butonuna tıklandığında açılacak PDF veya belgeyi buradan yükleyebilirsiniz.</p>
+        <ImageUploadField label="CV Dosyası (PDF veya URL)" value={hero.cvUrl || "/cv.pdf"} onChange={(v) => setHero({ ...hero, cvUrl: v })} isPdf={true} />
+      </div>
       
       <div className="mt-8 pt-6 border-t border-[#1E1E2A]">
         <h3 className="text-lg font-bold text-white mb-4">3D Kaydırmalı Fotoğraflar (Slider)</h3>
@@ -278,6 +284,62 @@ function AboutEditor({ data, onSave }: { data: SiteData; onSave: (v: SiteData["a
           ))}
           {(!about.education || about.education.length === 0) && (
             <div className="text-center py-4 text-xs text-[#4A4A60]">Kayıtlı eğitim bilgisi yok.</div>
+          )}
+        </div>
+      </div>
+
+      {/* Mevcut Sorumluluklar */}
+      <div className="pt-6 border-t border-[#1E1E2A]">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-bold text-[#A78BFA] uppercase tracking-widest text-[10px]">Mevcut Sorumluluklar</h3>
+          <button 
+            type="button"
+            onClick={() => setAbout({ 
+              ...about, 
+              responsibilities: [...(about.responsibilities || []), { title: "Yeni Unvan", role: "Yeni Kurum / Rol" }] 
+            })} 
+            className="px-2.5 py-1.5 text-[10px] bg-[#7C3AED] hover:bg-[#6D28D9] text-white rounded-lg transition-colors font-medium"
+          >
+            + Sorumluluk Ekle
+          </button>
+        </div>
+        <div className="space-y-4">
+          {(about.responsibilities || []).map((resp, idx) => (
+            <div key={idx} className="p-4 rounded-xl bg-[#111118] border border-[#1E1E2A] space-y-3 relative">
+              <button 
+                type="button"
+                onClick={() => setAbout({ 
+                  ...about, 
+                  responsibilities: (about.responsibilities || []).filter((_, i) => i !== idx) 
+                })} 
+                className="absolute top-2 right-2 text-red-500 hover:text-red-400 text-[10px] font-semibold px-2 py-1"
+              >
+                Sil
+              </button>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <Field 
+                  label="Unvan / Görev (Örn: Üniversite Başkanı)" 
+                  value={resp.title} 
+                  onChange={(v) => {
+                    const newResp = [...(about.responsibilities || [])];
+                    newResp[idx] = { ...newResp[idx], title: v };
+                    setAbout({ ...about, responsibilities: newResp });
+                  }} 
+                />
+                <Field 
+                  label="Kurum / Organizasyon (Örn: Türk Dünyası Gençlik Konseyi)" 
+                  value={resp.role} 
+                  onChange={(v) => {
+                    const newResp = [...(about.responsibilities || [])];
+                    newResp[idx] = { ...newResp[idx], role: v };
+                    setAbout({ ...about, responsibilities: newResp });
+                  }} 
+                />
+              </div>
+            </div>
+          ))}
+          {(!about.responsibilities || about.responsibilities.length === 0) && (
+            <div className="text-center py-4 text-xs text-[#4A4A60]">Kayıtlı mevcut sorumluluk yok.</div>
           )}
         </div>
       </div>

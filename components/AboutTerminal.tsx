@@ -123,12 +123,12 @@ export default function AboutSection() {
                     Mevcut Sorumluluklar
                   </h3>
                   
-                  {[
+                  {(d.about.responsibilities && d.about.responsibilities.length > 0 ? d.about.responsibilities : [
                     { title: "Üniversite Başkanı", role: "Türk Dünyası Gençlik Konseyi" },
                     { title: "Kurucu Yönetim Kurulu Başkanı", role: "GTÜ Türk Dünyası Gençlik Topluluğu" },
                     { title: "Denetim Kurulu Başkanı", role: "GTÜ Havacılık ve Uzay Kulübü" },
                     { title: "Proje Koordinatörü", role: "İlge Aİ" }
-                  ].map((item, idx) => (
+                  ]).map((item, idx) => (
                     <div key={idx} className="card p-5 group hover:bg-[#7C3AED]/5 transition-all hover:-translate-y-1">
                       <div className="flex items-start gap-3">
                         <div className="w-10 h-10 rounded-full bg-[#7C3AED]/10 flex items-center justify-center flex-shrink-0 border border-[#7C3AED]/20 group-hover:bg-[#7C3AED]/20 transition-colors">

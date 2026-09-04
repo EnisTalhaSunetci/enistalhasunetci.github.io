@@ -170,8 +170,9 @@ export default function HeroSection() {
               Projelerimi Keşfet
             </a>
             <a
-              href="/cv.pdf"
+              href={d.hero?.cvUrl || "/cv.pdf"}
               target="_blank"
+              download={d.hero?.cvUrl?.startsWith("data:") ? "Enis_Talha_Sunetci_CV.pdf" : undefined}
               className="px-6 py-3 bg-white/5 hover:bg-white/10 text-white text-sm font-medium rounded-xl border border-white/10 transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

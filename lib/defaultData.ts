@@ -21,6 +21,7 @@ export interface SiteData {
     available: boolean;
     availableText: string;
     location: string;
+    cvUrl?: string;
     slider: { image: string; title: string; desc: string; tag1: string; tag2: string; }[];
   };
   about: {
@@ -29,6 +30,7 @@ export interface SiteData {
     highlights: { value: string; label: string }[];
     education: { school: string; department: string; period: string; gpa?: string; note?: string }[];
     certificates: string[];
+    responsibilities?: { title: string; role: string }[];
     photo1: string;
     photo2: string;
   };
@@ -124,6 +126,7 @@ export const DEFAULT_SITE_DATA: SiteData = {
     "available": true,
     "availableText": "Müsait",
     "location": "Kocaeli / İstanbul, Türkiye",
+    "cvUrl": "/cv.pdf",
     "slider": [
       {
         "image": "/photos/media_1775556659498.jpg",
@@ -194,6 +197,12 @@ export const DEFAULT_SITE_DATA: SiteData = {
       "Uluslararası İnsansız Hava Araçları Yarışması Finalist Sertifikası – TEKNOFEST",
       "Uçuş Sertifikası – Sivrihisar Havacılık Merkezi",
       "B Sınıfı Sürücü Belgesi – T.C. İçişleri Bakanlığı"
+    ],
+    "responsibilities": [
+      { "title": "Üniversite Başkanı", "role": "Türk Dünyası Gençlik Konseyi" },
+      { "title": "Kurucu Yönetim Kurulu Başkanı", "role": "GTÜ Türk Dünyası Gençlik Topluluğu" },
+      { "title": "Denetim Kurulu Başkanı", "role": "GTÜ Havacılık ve Uzay Kulübü" },
+      { "title": "Proje Koordinatörü", "role": "İlge Aİ" }
     ],
     "photo1": "/photos/media_1775557304655.JPG",
     "photo2": "/photos/media__1775395402232.jpg"

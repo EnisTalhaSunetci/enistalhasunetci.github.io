@@ -165,8 +165,9 @@ export default function ContactSection() {
             </a>
           ))}
           <a
-            href="/cv.pdf"
+            href={d.hero?.cvUrl || "/cv.pdf"}
             target="_blank"
+            download={d.hero?.cvUrl?.startsWith("data:") ? "Enis_Talha_Sunetci_CV.pdf" : undefined}
             className="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-[#7C3AED]/10 backdrop-blur-xl border border-[#7C3AED]/30 hover:border-[#7C3AED] text-white text-sm font-black uppercase tracking-widest transition-all duration-500 hover:-translate-y-1 shadow-[0_10px_20px_rgba(124,58,237,0.2)]"
           >
             <svg className="w-5 h-5 text-[#A78BFA]" fill="none" stroke="currentColor" viewBox="0 0 24 24">

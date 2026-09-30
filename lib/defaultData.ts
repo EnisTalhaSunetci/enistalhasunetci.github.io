@@ -113,7 +113,7 @@ export const DEFAULT_SITE_DATA: SiteData = {
   "hero": {
     "name": "Enis Talha",
     "surname": "Sünetci",
-    "tagline": "İşletme 4. Sınıf Öğrencisi - Maltepe / İstanbul",
+    "tagline": "Lisans GTÜ İşletme - Maltepe / İstanbul",
     "description": "Havacılık, savunma sanayii ve yapay zeka kesişiminde çalışıyorum. Projeleri koordine ediyor, takımları yönetiyor ve stratejik çözümler üretiyorum. Farklı disiplinlere olan ilgim ve yeni bilgiler edinme tutkum, beni her alanda gelişmeye itiyor.",
     "tags": [
       "AI Proje Koordinatörü",
@@ -181,7 +181,7 @@ export const DEFAULT_SITE_DATA: SiteData = {
       {
         "school": "Gebze Teknik Üniversitesi",
         "department": "İşletme (Lisans %30 İngilizce)",
-        "period": "2021 – Devam ediyor",
+        "period": "2021 – 2026",
         "gpa": "3.37",
         "note": "4. Sınıf · Hazırlık sınıfı (İngilizce) 2021-2022"
       },
@@ -199,10 +199,10 @@ export const DEFAULT_SITE_DATA: SiteData = {
       "B Sınıfı Sürücü Belgesi – T.C. İçişleri Bakanlığı"
     ],
     "responsibilities": [
-      { "title": "Üniversite Başkanı", "role": "Türk Dünyası Gençlik Konseyi" },
-      { "title": "Kurucu Yönetim Kurulu Başkanı", "role": "GTÜ Türk Dünyası Gençlik Topluluğu" },
-      { "title": "Denetim Kurulu Başkanı", "role": "GTÜ Havacılık ve Uzay Kulübü" },
-      { "title": "Proje Koordinatörü", "role": "İlge Aİ" }
+      {
+        "title": "Üniversite Başkanı",
+        "role": "Türk Dünyası Gençlik Konseyi"
+      }
     ],
     "photo1": "/photos/media_1775557304655.JPG",
     "photo2": "/photos/media__1775395402232.jpg"
@@ -213,9 +213,9 @@ export const DEFAULT_SITE_DATA: SiteData = {
       "role": "Proje Koordinatörü",
       "period": "2026",
       "type": "İş Deneyimi",
-      "description": "İlge AI bünyesinde Yapay Zeka Proje Koordinatörü olarak uzun dönem stajımı gerçekleştirmekteyim. TÜBİTAK proje sunumları ve teknik dokümantasyon hazırlığı, Gözle serisi (Gözle Aİ, MIL, P, AIR, TD, T) görüntü işleme çözümlerinin koordinasyonu ve iş geliştirme süreçleri, kurumsal Linkedin içerik yönetimi ve dijital pazarlama stratejileri, şirket web sitesi geliştirme, yapay zeka tabanlı kalite kontrol sistemleri proje yönetimi, teknik ekipler ve paydaşlar arası operasyonel köprü kurma, kurumsal etkinlik organizasyonu ve marka temsilciliği.",
+      "description": "İlge AI bünyesinde Yapay Zeka Proje Koordinatörü olarak; Gözle serisi (Aİ, MIL, P, AIR, TD, T) ve yapay zeka tabanlı kalite kontrol ürünlerinin iş geliştirme süreçlerini uçtan uca yönettim. Teknik ekipler ile paydaşlar arasındaki operasyonel köprüyü kurarak TÜBİTAK projelerinin süreç yönetimi ile teknik dokümantasyonlarına liderlik ettim. İşin teknik operasyonlarını dijital pazarlama, web yönetimi ve kurumsal marka stratejileriyle harmanlayarak şirketin büyüme hedeflerine doğrudan ve stratejik katkı sağladım.",
       "tags": [],
-      "active": true
+      "active": false
     },
     {
       "period": "2025 – Devam ediyor",
@@ -287,7 +287,7 @@ export const DEFAULT_SITE_DATA: SiteData = {
     {
       "period": "2023 – 2024",
       "org": "GTU-AQUA İHA Takımı",
-      "role": "Mekanik Ekibi Üyesi & Takım Kaptanı",
+      "role": "Mekanik Ekibi Üyesi",
       "type": "Yarışma",
       "description": "SolidWorks ile parça tasarımı ve üretim süreçlerinde aktif görev aldım. Raporlama, sponsorluk ve tanıtım faaliyetlerinde bulundum. Teknofest 2024 İHA Yarışması'nda 685 takım arasından finale kalan ilk 44 takım içinde yer aldık.",
       "tags": [
@@ -450,25 +450,25 @@ export const DEFAULT_SITE_DATA: SiteData = {
   },
   "contact": {
     "email": "sunetcienistalha@gmail.com",
-    "phone": "+90 535 596 34 31",
+    "phone": "",
     "linkedin": "https://www.linkedin.com/in/enis-talha-s%C3%BCnetci-5854a5221/",
     "instagram": "https://www.instagram.com/enis_talha/",
     "github": "",
-    "location": "Kocaeli / İstanbul, Türkiye",
+    "location": "İstanbul, Türkiye",
     "address": "Altayeşme Mah. Birsen Sok. no:17/19 daire:12 Maltepe/İstanbul",
     "showEmail": true,
     "showPhone": false,
     "showLinkedin": true,
     "showInstagram": true,
-    "showGithub": true,
+    "showGithub": false,
     "showLocation": true,
     "showAddress": false
   },
   "seo": {
     "homepage": {
-      "title": "Enis Talha Sünetci / Portfolyo",
-      "description": "Enis Talha Sünetci / Portfolyo",
-      "keywords": "Enis Talha Sünetci, Havacılık, İHA, Yapay Zeka, GTÜ, Portfolyo"
+      "title": "Enis Talha Sünetci | Stratejist",
+      "description": "Enis Talha Sünetci'nin kişisel portfolyosu. Havacılık, savunma sanayii ve yapay zeka alanındaki projeler, deneyimler ve etkinlikler.",
+      "keywords": "Enis Talha Sünetci, Havacılık, İHA, Yapay Zeka, GTÜ, Proje Koordinatörü"
     },
     "projects": {
       "title": "Projelerimiz | Enis Talha Sünetci",
@@ -681,7 +681,7 @@ export const DEFAULT_SITE_DATA: SiteData = {
       ]
     },
     {
-      "title": "TDT – Ulusal Teşkilatlanma Kampı",
+      "title": "TDGK – Ulusal Teşkilatlanma Kampı",
       "org": "Türk Dünyası Gençlik Vakfı",
       "date": "2025",
       "description": "Türk Dünyası Gençlik Vakfı tarafından düzenlenen Ulusal Teşkilatlanma Kampı’na, Türkiye genelindeki üniversite başkanlarıyla birlikte katılım sağladım. Bir hafta süren kamp boyunca sosyal ve akademik faaliyetlerin yanı sıra, kurumlar arası etkileşimi güçlendiren çeşitli organizasyonlar gerçekleştirdik ve diplomatik temaslarda bulunduk.\n\nBu süreç, teşkilatlanma, liderlik ve çok yönlü koordinasyon becerilerimin gelişmesine önemli katkı sağladı.",
@@ -797,6 +797,48 @@ export const DEFAULT_SITE_DATA: SiteData = {
     }
   ],
   "projects": [
+    {
+      "slug": "turk-dunyasi-genclik",
+      "title": "Türk Dünyası İHA Yarışması",
+      "subtitle": "Kurucu YK Başkanı & Koordinatör · 2026",
+      "category": "Diplomasi & Teknoloji",
+      "period": "2025 – 2026",
+      "coverPhoto": "/photos/admin_upload_1.jpg",
+      "gallery": [
+        "/photos/media_1775570812695.jpeg",
+        "/photos/media_1775570816275.jpeg",
+        "/photos/media_1775570818489.jpeg",
+        "/photos/admin_upload_2.jpg",
+        "/photos/admin_upload_3.jpg",
+        "/photos/admin_upload_4.jpg",
+        "/photos/admin_upload_5.jpg",
+        "/photos/admin_upload_6.jpg",
+        "/photos/admin_upload_7.jpg",
+        "/photos/admin_upload_8.jpg",
+        "/photos/admin_upload_9.jpg",
+        "/photos/admin_upload_10.jpg"
+      ],
+      "description": [
+        "Tarihte Bir İlk: Türk Dünyası İHA Yarışması:",
+        "Dünya tarihinde bir ilk niteliği taşıyan ve 11-17 Mayıs 2026 tarihleri arasında Gebze Teknik Üniversitesi ev sahipliğinde gerçekleştirilen Türk Dünyası İHA Yarışması, standart bir mühendislik müsabakası olmanın ötesinde, stratejik bir diplomasi ve teknoloji köprüsü olarak tasarlanmıştır. Kurucu Yönetim Kurulu Başkanı olduğum Türk Dünyası Gençlik Topluluğu bünyesinde hayata geçirilen bu vizyoner projenin Genel Koordinatörlüğünü üstlenmek, ortak geleceğimize atılan bu tarihi adımın bir parçası olmak benim için büyük bir gurur kaynağıdır.",
+        "Teknolojik Bağımsızlık ve Stratejik \"Yumuşak Güç\"\nBu organizasyonun temel çıkış noktası; Türkiye’nin son on yılda savunma sanayisi ve insansız hava araçları teknolojilerinde elde ettiği küresel başarıyı ve bilgi birikimini, Türk Devletleri Teşkilatı üye ülkelerinin genç yetenekleriyle doğrudan paylaşmaktır. Rekabetten ziyade dayanışmayı merkeze alan bu yaklaşım, Türkiye'nin teknolojik kapasitesini uluslararası arenada güçlü bir \"yumuşak güç\" (soft power) unsuru olarak konumlandırmıştır. Amacımız, kardeş coğrafyalarımızın genç beyinlerine salt teknik bir eğitim vermek değil; teknolojik bağımsızlık vizyonunu aşılayarak, geleceğin savunma sanayii liderleri arasında sarsılmaz bir diplomatik bağ kurmaktı.",
+        "İleri Mühendislik ve Operasyonel Gerçekçilik\nOrganizasyon, mühendislik disiplinlerinden taviz verilmeden, yüksek teknik standartlarda icra edilmiştir. Yarışma konsepti, hazır görüntü işleme sistemlerinden ziyade, tamamen **koordinat ve sensör verilerine odaklanan**, katılımcıların algoritmik düşünme ve otonom navigasyon becerilerini en üst düzeyde sınayan gerçekçi operasyonel senaryolar üzerine inşa edilmiştir. Bu zorlu teknik altyapı, verilen diplomatik mesajın altının güçlü bir mühendislik vizyonuyla doldurulmasını sağlamıştır.",
+        "Kapsamlı Organizasyon Yönetimi ve Kültürel Diplomasi\nProjenin uluslararası boyutu, operasyonel kusursuzluk gerektiren titiz bir lojistik planlama ile yönetilmiştir. Kardeş ülkelerden gelen tüm katılımcılarımızın uluslararası uçuşlarından konaklama ve transferlerine kadar olan tüm maliyet ve operasyonel süreçler, organizasyonumuz tarafından eksiksiz bir ev sahipliğiyle karşılanmıştır.",
+        "Bir hafta süren bu geniş çaplı organizasyon, yalnızca saha yarışmalarıyla sınırlı kalmamış; düzenlenen kapsamlı kültürel geziler, akademik buluşmalar ve sosyal etkinlikler aracılığıyla katılımcılara Türkiye’nin tarihi, kültürel mirası ve modern vizyonu tanıtılmıştır. Türk Dünyası İHA Yarışması, ortak köklerimizden aldığımız gücü modern teknolojiyle harmanlayan, uluslararası gençlik entegrasyonu alanında referans niteliğinde bir projedir."
+      ],
+      "role": "Kurucu YK Başkanı & Koordinatör",
+      "org": "GTÜ Türk Dünyası Gençlik Topluluğu",
+      "achievements": [],
+      "technologies": [
+        "Liderlik",
+        "Diplomasi",
+        "Uluslararası İlişkiler",
+        "Proje Yönetimi"
+      ],
+      "relatedSlugs": [
+        "kizilay-gonulluluk"
+      ]
+    },
     {
       "slug": "havacilik-uzay-zirvesi",
       "title": "GTÜ 3. Havacılık ve Uzay Zirvesi",
@@ -976,35 +1018,6 @@ export const DEFAULT_SITE_DATA: SiteData = {
       ],
       "relatedSlugs": [
         "teknofest-iha"
-      ]
-    },
-    {
-      "slug": "turk-dunyasi-genclik",
-      "title": "Türk Dünyası İHA Yarışması",
-      "subtitle": "Kurucu YK Başkanı & Koordinatör · 2025",
-      "category": "Diplomasi & Teknoloji",
-      "period": "2025 – Devam ediyor",
-      "coverPhoto": "/photos/media_1775570806123.jpeg",
-      "gallery": [
-        "/photos/media_1775570812695.jpeg",
-        "/photos/media_1775570816275.jpeg",
-        "/photos/media_1775570818489.jpeg"
-      ],
-      "description": [
-        "Türk Dünyası İHA Yarışması’nın koordinatörü olarak, Türk Devletleri Teşkilatı üyesi 8 ülkeden üniversite takımlarını bir araya getirmeyi hedefleyen uluslararası bir organizasyonu yönetiyorum. Bu girişim, yalnızca teknik bir yarışma olmanın ötesinde; Türk dünyası gençleri arasında kalıcı bağlar kurmayı, ortak üretim kültürünü güçlendirmeyi ve teknoloji odaklı iş birliğini derinleştirmeyi amaçlayan stratejik bir platform niteliği taşımaktadır.",
-        "Bilim ve mühendislik ekseninde şekillenen bu organizasyon, ülkeler arası etkileşimi artırarak gençlik temelli bir ‘yumuşak güç’ inşasına katkı sağlamakta; ortak değerler etrafında birleşen yeni nesil liderlerin yetişmesine zemin hazırlamaktadır. Bu doğrultuda süreç; uluslararası koordinasyon, paydaş yönetimi ve çok boyutlu organizasyon planlaması ile aktif olarak tarafımca yürütülmektedir"
-      ],
-      "role": "Kurucu YK Başkanı & Koordinatör",
-      "org": "GTÜ Türk Dünyası Gençlik Topluluğu",
-      "achievements": [],
-      "technologies": [
-        "Liderlik",
-        "Diplomasi",
-        "Uluslararası İlişkiler",
-        "Proje Yönetimi"
-      ],
-      "relatedSlugs": [
-        "kizilay-gonulluluk"
       ]
     }
   ]

@@ -466,7 +466,7 @@ export const DEFAULT_SITE_DATA: SiteData = {
   },
   "seo": {
     "homepage": {
-      "title": "Enis Talha Sünetci | Stratejist",
+      "title": "Enis Talha Sünetci | Portfolyo",
       "description": "Enis Talha Sünetci'nin kişisel portfolyosu. Havacılık, savunma sanayii ve yapay zeka alanındaki projeler, deneyimler ve etkinlikler.",
       "keywords": "Enis Talha Sünetci, Havacılık, İHA, Yapay Zeka, GTÜ, Proje Koordinatörü"
     },

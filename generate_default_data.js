@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const jsonPath = path.join(__dirname, 'cleaned_data.json');
+const jsonPath = path.join(__dirname, 'cleaned_data2.json');
 const outPath = path.join(__dirname, 'lib', 'defaultData.ts');
 
 let jsonStr = fs.readFileSync(jsonPath, 'utf8');
@@ -25,3 +25,10 @@ const output = `${interfaceSection}export const DEFAULT_SITE_DATA: SiteData = ${
 fs.writeFileSync(outPath, output, 'utf8');
 console.log('defaultData.ts updated successfully!');
 console.log(`File size: ${output.length} bytes`);
+
+// Verify no Stratejist
+if (output.includes('Stratejist')) {
+  console.error('WARNING: Stratejist still found in output!');
+} else {
+  console.log('Verified: No "Stratejist" in output.');
+}

@@ -30,6 +30,8 @@ export function useSiteData() {
         // Migration: Replace old role title and GPA
         raw = raw.replace(/İHA Takım Lideri/g, "İHA Mekanik Ekip Üyesi");
         raw = raw.replace(/3\.34/g, "3.37");
+        raw = raw.replace(/Stratejist/g, "Portfolyo");
+        try { localStorage.setItem(STORAGE_KEY, raw); } catch {}
         const parsed = JSON.parse(raw);
         
         // Repair broken slugs from accidental manual edits

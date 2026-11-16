@@ -154,7 +154,7 @@ export const DEFAULT_SITE_DATA: SiteData = {
   "about": {
     "heading": "Hayallerimi projeye, projeleri gerçeğe dönüştürüyorum.",
     "paragraphs": [
-      "Gebze Teknik Üniversitesi İşletme bölümü 4. sınıf öğrencisiyim (GPA: 3.37, %30 İngilizce). Farklı disiplinlere duyduğum ilgi ve yeni bilgiler edinme tutkum, işletme bölümünü tercih etmemi sağladı.",
+      "Gebze Teknik Üniversitesi İşletme bölümü mezunuyum (GPA: 3.37, %30 İngilizce). Farklı disiplinlere duyduğum ilgi ve yeni bilgiler edinme tutkum, işletme bölümünü tercih etmemi sağladı.",
       "Yönetim alanındaki güçlü yönlerim ve teknik konulara olan merakım sayesinde, hem stratejik hem operasyonel becerilerimi geliştirmeyi hedefliyorum. Havacılık, uzay, teknoloji ve savunma sanayi alanlarına olan ilgim doğrultusunda; bu sektörlerde liderlik pozisyonlarında görev almak ve uzun vadede sektöre değer katan projeler üretmek önemli kariyer hedeflerim arasında yer alıyor.",
       "Sadece teorik bilgiyle yetinmeyip, sahada uygulama yapmayı ve üretim süreçlerinde aktif rol almayı da önemseyen bir yaklaşım benimsiyorum. Üniversite hayatım boyunca görev aldığım kulüplerde özellikle havacılık ve uzay alanında birçok etkinlik, fuar ve yarışmada aktif görev aldım.",
       "50+ salon etkinliği, gezi, fuar ve yarışma ile organizasyon yönetimi, takım koordinasyonu ve kriz çözme konularında deneyim kazandım. Yenilikçi, takım ruhuna önem veren bir kişiliğe sahibim. Çözüm odaklı fikirler üretmek ve kurum kültürüne uyum sağlamak en güçlü yanlarım."

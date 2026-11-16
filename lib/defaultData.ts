@@ -183,7 +183,7 @@ export const DEFAULT_SITE_DATA: SiteData = {
         "department": "İşletme (Lisans %30 İngilizce)",
         "period": "2021 – 2026",
         "gpa": "3.37",
-        "note": "4. Sınıf · Hazırlık sınıfı (İngilizce) 2021-2022"
+        "note": "Mezun · Hazırlık sınıfı (İngilizce) 2021-2022"
       },
       {
         "school": "Şehit Mustafa Kaymakçı AİHL",

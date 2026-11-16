@@ -31,6 +31,8 @@ export function useSiteData() {
         raw = raw.replace(/İHA Takım Lideri/g, "İHA Mekanik Ekip Üyesi");
         raw = raw.replace(/3\.34/g, "3.37");
         raw = raw.replace(/Stratejist/g, "Portfolyo");
+        raw = raw.replace(/4\. Sınıf · Hazırlık sınıfı/g, "Mezun · Hazırlık sınıfı");
+        raw = raw.replace(/İşletme bölümü 4\. sınıf öğrencisiyim/g, "İşletme bölümü mezunuyum");
         try { localStorage.setItem(STORAGE_KEY, raw); } catch {}
         const parsed = JSON.parse(raw);
         
